@@ -1,0 +1,91 @@
+Reserving a rental car online before picking it up (Reference: Example 1)
+
+Customer can
+1. search cars based on parameters(pick-up city, return city, pick-up date, return date)
+2. add filters for searching result(price, type, capacity)
+3. reserve the selected car
+4. pay the rent online
+5. cancel reservation
+
+------------------------------------------------
+
+Class: Customer
+State: name, age, driverLicenseDetails, phoneNumber, creditCardDetails
+Behavior: searchCars(parameters){
+    List <Cars> cars = WebsiteService.searchCars(parameters);
+}
+Behavior: addFilters(filters){
+    List <Cars> cars = WebsiteService.addFilters(filters);
+}
+Behavior: reserveACar(carChoice){
+    WebsiteService.generateReservation(carChoice, customer);
+}
+Behavior: payRent(){
+    WebsiteService.chargeRent(creditCardDetails);
+}
+Behavior: cancelReservation(ReservationId){
+    WebsiteService.cancelReservation(customer, reservationId);
+}
+
+------------------------------------------------
+
+Class: DriverLicenseDetails
+State: ownerName, driverLicenseId, expireDate
+Behavior: isOwnerNameCorrect(customer){
+    if(Customer.name == DriverLicenseDetails.name)
+        return true;
+    return false;
+}
+Behavior: isLicenseExpired(){
+    Date today = new Date();
+    if(today.compareTo(expiryDate) == 1)
+        return true;
+    return false;
+}
+
+------------------------------------------------
+
+Class: CreditCardDetails
+State: ownerName, cardNumber, cardType, expireDate, cvvNumber
+Behavior: isOwnerNameCorrect(customer){
+    if(Customer.name == DriverLicenseDetails.name)
+        return true;
+    return false;
+}
+Behavior: isCardExpired(){
+    Date today = new Date();
+    if(today.compareTo(expiryDate) == 1)
+        return true;
+    return false;
+}
+Behavior: isCardTypeAvailable(acceptType){
+    Type acceptType = new Type();
+    if(acceptType.include(cardType) == 1)
+        return true;
+    return false;
+}
+------------------------------------------------
+
+Class: WebsiteService
+Behavior: searchCars(parameters){
+    // search eligible available cars
+}
+Behavior: addFilters(filters){
+    for (i = 0; i < searchResults.length; i++)
+        if(searchResults(i).compareTo(filters) == true)
+        searchResults(i).addToFilterResult;
+}
+Behavior: generateReservation(carChoice, customer){
+    if(customer.age >= 18 && driverLicenseDetails.isOwnerNameCorrect(customer) && driverLicenseDetails.isCardExpired(customer) )
+        car.becomeUnavailable(carChoice);
+        reservationId.generateId(customer);
+}
+Behavior: chargeRent(customer, creditCardDetails){
+    if(creditCardDetails.isOwnerNameCorrect(customer) && creditCardDetails.isCardExpired(customer) && creditCardDetails.isCardTypeAvailable(customer))
+        PaymentService.chargeFee(creditCardDetails)
+}
+Behavior: cancelReservation(customer, reservationId){
+    if(customer.name == reservationId.name)
+        PaymentService.refund(customer)
+        car.becomeAvailable(carChoice)
+}

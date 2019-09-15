@@ -1,0 +1,49 @@
+Design a traffic controller system for a small 4-way junction
+
+This system can
+1. control four traffic signals changing from red to green periodically
+2. change four traffic signals to flashing red in all-stop mode
+
+------------------------------------------------
+
+Class: TrafficController
+State: mode, fourWayJunction
+Behaviour: makeRegularMode(){
+    // In regular mode traffic signal changes color periodically
+    if(fourWayJunction.trafficSignal1.currentColorTimeUp())
+        fourWayJunction.trafficSignal1.changeColor();
+    if(fourWayJunction.trafficSignal2.currentColorTimeUp())
+        fourWayJunction.trafficSignal2.changeColor();
+}
+Behaviour: makeAllStopMode(){
+    // In all-stop mode traffic signal flashes in red color
+}
+
+------------------------------------------------
+
+Class: FourWayJunction
+State: roadName1, roadName2, trafficSignal1, trafficSignal2
+Behaviour: isTimeOK(){
+	if(trafficSignal1.redTime < trafficSignal2.greenTime+trafficSignal2.yellowTime)
+		return false;
+	if(trafficSignal2.redTime < trafficSignal1.greenTime+trafficSignal1.yellowTime)
+		return false;	
+	return true;
+}
+
+------------------------------------------------
+
+Class: TrafficSignal
+State: roadName, color, greenTime, yellowTime, redTime
+Behaviour: currentColorTimeUp(){
+	return checkCurrentColorTimeUp();
+}
+Behaviour: changeColor(){
+	if(color == green)
+		color = yellow;
+	else 
+		if(color == yellow)
+			color = red;
+		else
+			color = green;
+}

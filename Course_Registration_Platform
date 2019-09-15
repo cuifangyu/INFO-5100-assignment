@@ -1,0 +1,89 @@
+Design a online platform for registering courses (Reference: Example 1)
+
+Students can
+1. Login
+2. Search courses based on parameters (time, location, type)
+3. Get course details(schedule, syllabus, professor, capacity)
+4. Register courses
+5. Drop courses
+
+-------------------------------------------------------------------------------
+
+Class: Student
+State: name, studentId, studentAccount, major, currentSchedule
+Behavior: login(){
+    WebsiteService.login(student, studentAccount);
+}
+Behavior: searchCourses(parameters){
+    List <Courses> courses = WebsiteService.searchCourses(parameters);
+}
+Behavior: checkDetails(selectedCourse){
+    List <Details> details = WebsiteService.checkDetails(selectedCourse);
+}
+Behavior: registerCourse(selectedRegisterCourse){
+    WebsiteService.registerCourse(student, selectedRegisterCourse);
+}
+Behavior: dropCourse(selectedDropCourse){
+    WebsiteService.dropCourse(student, selectedDropCourse);
+}
+-------------------------------------------------------------------------------
+
+Class: StudentAccount
+State: name, studentId, accountPassword
+Behavior: isStudentNameCorrect(student){
+    if(student.name == studentAccount.name)
+        return true;
+    return false;
+}
+Behavior: isStudentIdCorrect(student){
+    if(student.studentId == studentAccount.studentId)
+        return true;
+    return false;
+}
+Behavior: isPasswordCorrect(){
+    if(studentAccount.accountPassword == websiteRecord.accountPassword)
+        return true;
+    return false;
+}
+
+-------------------------------------------------------------------------------
+
+Class: CurrentSchedule
+State: currentTime, currentPoint
+Behavior: isTimeAvailable(selectedCourse){
+    if(selectedCourse.time.compareTo(currentTime) == 1)
+        return true;
+    return false;
+}
+Behavior: isPointAvailable(selectedCourse){
+    Point newPoint = new Point;
+    newPoint = selectedCourse.point + currentPoint;
+    if(newPoint.compareTo(majorRequirement) == 1)
+        return true;
+    return false;
+}
+
+-------------------------------------------------------------------------------
+
+Class: WebsiteService
+Behavior: login(student, studentAccount){
+    if(studentAccount.isStudentNameCorrect(student) && studentAccount.isStudentIdCorrect(student) && studentAccount.isPasswordCorrect(student))
+        return true;
+    return false;
+}
+Behavior: searchCourses(parameters){
+    // search eligible available courses
+}
+Behavior: checkDetails(selectedCourse){
+    List <Details> details = Course.showDetails(selectedCourse)
+}
+Behavior: registerCourse(student, selectedRegisterCourse){
+    if(currentSchedule.isTimeAvailable(student, selectedRegisterCourse) && currentSchedule.isPointAvailable(student, selectedRegisterCourse))
+        student.registrationSuccess
+        selectedCourse.addToSchedule
+}
+Behavior: dropCourse(student, selectedDropCourse){
+    if(currentSchedule.isTimeAvailable(student, selectedDropCourse) && currentSchedule.isPointAvailable(student, selectedDropCourse))
+        student.dropSuccess
+        selectedDropCourse.moveFromSchedule
+}
