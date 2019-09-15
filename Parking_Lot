@@ -1,0 +1,80 @@
+Design a parking lot
+
+Customer can:
+1. Push button for a ticket
+2. Park the car at available location
+3. Pay and leave parking lot
+
+----------------------------------------------------------------
+
+Class: Customer
+State: ticketId, inTime, creditCardDetails
+Behavior: pushButton(inTime){
+    Controller.carComeIn(inTime);
+    ticketId.produce
+    // produce a ticket for customer
+}
+Behavior: parkCar(){
+    findAvailableLocation()
+    park()
+    // park the car at available location
+}
+Behavior: payAndLeave(){
+    Controller.carLeave(ticketId, creditCardDetails)
+}
+
+----------------------------------------------------------------
+
+Class: CreditCardDetails
+State: cardNumber, cardPassword, cardType, expireDate
+Behavior: isCardExpired(){
+    Date today = new Date();
+    if(today.compareTo(expiryDate) == 1)
+        return true;
+    return false;
+}
+Behavior: isCardTypeAvailable(acceptType){
+    Type acceptType = new Type();
+    if(acceptType.include(cardType) == 1)
+        return true;
+    return false;
+}
+Behavior: isPasswordCorrect(){
+    if(creditCardDetails.cardPassword == bankRecord.cardPassword)
+        return true;
+    return false;
+}
+
+----------------------------------------------------------------
+
+Class: Controller
+State: listOfCar
+Behaviour: carComeIn(inTime){
+	Car newCar = new Car(inTime);
+	addElement(listOfCar, newCar);
+}
+Behaviour: carLeave(ticketId, creditCardDetails){
+	if(isTicketIdValid(ticketId))
+		currentCar = searchCar(ticketId);
+		totalTime = currentTime - currentCar.inTime;
+		rate = calculateRate(totalTime);
+		makePayment(rate, creditCardDetails);
+		deleteElement(listOfCar,currentCar);
+	else
+		return false;
+}
+Behaviour: isTicketIdValid(ticketId){
+	// check ticketId valid or not
+}
+Behaviour: searchCar(ticketId){
+	// find element with ticketId in listOfCar
+	return currentCar;
+}
+Behaviour: calculateRate(outTime){
+	// calculate rate
+	return rate;
+}
+Behavior: makePayment(rate, creditCardDetails){
+    if(creditCardDetails.isCardExpired() && creditCardDetails.isCardTypeAvailable(acceptType) && creditCardDetails.isPasswordCorrect())
+        PaymentService.chargeFee(rate, creditCardDetails)
+}
