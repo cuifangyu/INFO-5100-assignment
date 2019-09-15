@@ -1,0 +1,61 @@
+Design a vending Machine
+
+User can
+1. buy products with coins 
+2. get change
+3. cancel transaction
+
+----------------------------------------------------------------------------
+
+Class: User
+Behavior: insertCoin(coin){
+    Controller.addCoin(coin);
+}
+Behavior: buyProducts(currentChoice){
+    Controller.transaction(currentChoice);
+}
+Behavior: cancelOrder(balance){
+    if(User.pressCancelButton())
+        Controller.getChange(balance);
+}
+
+----------------------------------------------------------------------------
+
+Class: Coin
+State: denomination
+
+----------------------------------------------------------------------------
+
+Class: Product
+State: name, price, number
+Behaviour: soldOne(){
+	number -- ;
+}
+
+----------------------------------------------------------------------------
+
+Class: Controller
+State: balance, ListOfProduct, currentChoice
+Behaviour: addCoin(coin){
+	receivedCoin = getCoin(coin);
+	balance = balance + receivedCoin.denomination;
+}
+Behaviour: transaction(currentChoice){
+	currentProduct = ListOfProduct(currentChoice);
+	if(currentProduct.number == 0)
+		return soldOut();
+	else
+		if(balance < currentProduct.price)
+			return needMoreMoney();
+		else
+			balance = balance - currentProduct.price;
+			currentProduct.soldOne();
+			getChange();
+}
+Behaviour: getChange(){
+	giveChange(balance);
+	balance = 0;
+}
+Behaviour: cancel(){
+	getChange();
+}
