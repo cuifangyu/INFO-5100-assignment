@@ -110,20 +110,16 @@ public class StudentSystem {
                 String name = nameText.getText();
                 String gender = genderChoice.getSelectedItem().toString();
                 ArrayList<RowFilter<Object, Object>> filters = new ArrayList<>();
-                int count = 0;
                 if(id.length() != 0){
-                    filters.add(RowFilter.regexFilter(id, count));
-                    count++;
+                    filters.add(RowFilter.regexFilter(id, 0));
                 }
                 if(name.length() != 0){
-                    filters.add(RowFilter.regexFilter(name, count));
-                    count++;
+                    filters.add(RowFilter.regexFilter(name, 1));
                 }
                 if(gender.length() != 0){
-                    filters.add(RowFilter.regexFilter(gender, count));
-                    count++;
+                    filters.add(RowFilter.regexFilter(gender, 2));
                 }
-                if(count == 0){
+                if(filters.size() == 0){
                     sorter.setRowFilter(null);
                 } else {
                     RowFilter filter = RowFilter.andFilter(filters);
